@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=backend:5000  # For Next.js apps, variables must be prefixed with NEXT_PUBLIC_
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - APP_ENV=local
+      - APP_KEY=your_laravel_app_key_here
+      - APP_DEBUG=true
+      - APP_URL=http://localhost:5000
+      - LOG_CHANNEL=stack
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=your_database
+      - DB_USERNAME=your_db_user
+      - DB_PASSWORD=your_db_password
+      - OPEN_WEATHER_API_KEY=
+    volumes:
+      - ./backend:/app
+
